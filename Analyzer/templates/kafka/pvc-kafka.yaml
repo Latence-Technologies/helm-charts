@@ -1,0 +1,16 @@
+{{ if .Values.kafka.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.kafka.pvcSize }}
+{{ end }}

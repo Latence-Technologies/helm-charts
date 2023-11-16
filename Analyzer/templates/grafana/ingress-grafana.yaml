@@ -1,0 +1,12 @@
+{{ if and .Values.grafana.enabled .Values.grafana.ingressEnabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+spec:
+  defaultBackend:
+    service:
+      name: grafana
+      port:
+        number: {{ .Values.grafana.svcPort }}
+{{ end }}

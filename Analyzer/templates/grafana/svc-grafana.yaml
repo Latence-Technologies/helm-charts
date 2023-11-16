@@ -1,0 +1,17 @@
+{{ if .Values.grafana.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: grafana
+spec:
+  ports:
+    - name: "app"
+      port: {{ .Values.grafana.svcPort }}
+      targetPort: 3000
+  selector:
+    app: grafana
+{{ end }}

@@ -1,0 +1,16 @@
+{{ if .Values.influx.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: influxdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.influx.pvcSize }}
+{{ end }}

@@ -1,0 +1,43 @@
+# General values to configure the environment
+license: "TO BE SET"
+
+# Registry used to fetch deployments images
+registryBasePath: registry.latence.ca/software/ 
+
+# Indicates whether or not Nginx ingress controller should be deployed
+deployNginxIngress: false
+
+globalLabels:
+  solutionName: latencetech
+
+# Influx configuration and feature flag
+influx:
+  enabled: true
+  pvcSize: 1Gi
+  svcPort: 8086
+
+# Kafka configuration and feature flag
+kafka:
+  enabled: true
+  pvcSize: 1Gi
+  svcPort: 12092
+  ingressEnabled: true
+  svcClusterIp: "10.104.100.100"
+  zookeeperEndpoint: "zookeeper-0.zookeeper"
+
+# Grafana configuration and feature flag
+grafana:
+  enabled: true
+  pvcSize: 1Gi
+  svcPort: 3000
+  ingressEnabled: true
+
+# Telegraf configuration and feature flag
+telegraf:
+  enabled: true
+  svcPort: 8125
+
+# Telegraf configuration and feature flag
+zookeeper:
+  enabled: true
+  svcPort: 2181

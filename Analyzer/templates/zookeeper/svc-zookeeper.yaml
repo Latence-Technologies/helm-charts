@@ -1,0 +1,17 @@
+{{ if .Values.zookeeper.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: zookeeper
+spec:
+  ports:
+    - name: "app"
+      port: {{ .Values.zookeeper.svcPort }}
+      targetPort: 2181
+  selector:
+    app: zookeeper
+{{ end }}

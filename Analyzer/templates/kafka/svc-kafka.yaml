@@ -1,0 +1,18 @@
+{{ if .Values.kafka.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: kafka
+spec:
+  clusterIP: {{ .Values.kafka.svcClusterIp }}
+  ports:
+    - name: "app"
+      port: {{ .Values.kafka.svcPort }}
+      targetPort: 12092
+  selector:
+    app: kafka
+{{ end }}

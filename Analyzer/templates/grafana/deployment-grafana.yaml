@@ -1,0 +1,40 @@
+{{ if .Values.grafana.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      securityContext:
+          runAsUser: 472
+          fsGroup: 472
+      containers:
+        - image: {{ printf "%s%s" .Values.registryBasePath "grafana:latest" }}
+          name: grafana  
+          ports:
+            - containerPort: 3000
+          securityContext:
+            runAsUser: 1000
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-claim0
+      restartPolicy: Always
+      volumes:
+        - name: grafana-claim0
+          persistentVolumeClaim:
+            claimName: grafana
+{{ end }}

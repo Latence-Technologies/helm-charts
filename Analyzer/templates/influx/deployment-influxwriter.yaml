@@ -1,0 +1,34 @@
+{{ if .Values.influx.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- range $key, $val := .Values.globalLabels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  name: influx-writer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influx-writer
+  template:
+    metadata:
+      labels:
+        app: influx-writer
+    spec:
+      containers:
+        - env:
+          - name: LTI_license_key
+            valueFrom:
+              secretKeyRef:
+                name: latencetech
+                key: LTI_license_key
+          image: {{ printf "%s%s" .Values.registryBasePath "influx-writer:latest" }}
+          name: influx-writer
+      restartPolicy: Always
+      hostAliases:
+        - hostnames:
+          - "msgbus.latence.ca"
+          ip: {{ .Values.kafka.svcClusterIp }}
+{{ end }}
